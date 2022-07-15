@@ -24,13 +24,15 @@ Documentation: [English version](https://github.com/luolongfei/freenom/blob/main
 
 [📪 配置送信功能](#-配置送信功能)（支持 邮件送信 / Telegram Bot / 企业微信 / Server 酱 / Bark 等送信方式）
 
-[🐳 通过 Docker 方式部署](#-方式一通过-docker-部署推荐最简单的部署方式)（推荐，最简单的部署方式）
+[🐳 通过 Docker 方式部署](#-通过-docker-部署)（推荐，最简单的部署方式之一）
 
-[🚈 通过 Railway 部署](#-方式二通过-Railway-部署)（推荐没有自己服务器的用户使用此方案）
+[🚈 通过 Railway 部署](#-通过-Railway-部署)（推荐没有自己服务器的用户使用此方案）
 
-[☁ 通过 各种云函数 部署](#-方式三通过各种云函数部署)（同上）
+[🧊 通过 Heroku 部署](#-通过-Heroku-部署)
 
-[🚧 直接拉取源码部署](#-方式四直接拉取源码部署)
+[☁ 通过 各种云函数 部署](#-通过各种云函数部署)
+
+[🚧 直接拉取源码部署](#-直接拉取源码部署)
 
 [📋 赞助名单 Donation List](#-赞助名单-donation-list)
 
@@ -56,8 +58,8 @@ Documentation: [English version](https://github.com/luolongfei/freenom/blob/main
   仓库，然后在 [@Mattraks](https://github.com/Mattraks) 的提醒下，通过特别的方式恢复了本仓库。
 - 本次封禁导致的直接后果是以前的`issues`全部丢失，以及近`1.8k`的`star`数重新归零，在动力上面确实有受到影响，不过也不会有太大影响，本项目依然长期维护，如果项目有帮到你，欢迎 star。
 - 狡兔三窟，临时仓库 https://github.com/luolongfei/next-freenom 也是备用仓库，如若本仓库再次失联，可以移步到备用仓库获取最新消息，正常情况下以后的开发维护依然在本仓库进行。
-- 推荐 [🐳 通过 Docker 方式部署](#-方式一通过-docker-部署推荐最简单的部署方式)，也可以参考下方文档 [🚈 通过 Railway 部署](#-方式二通过-Railway-部署)
-  或者 [☁ 通过 各种云函数 部署](#-方式三通过各种云函数部署)，各种`云函数`不需要你有自己的服务器，不过由于`云函数`政策经常变化，也许 [Railway](https://railway.app/) 是更好的选择。
+- 推荐 [🐳 通过 Docker 方式部署](#-通过-docker-部署)。如果你没有自己的服务器，可参考本文档 [🚈 通过 Railway 部署](#-通过-Railway-部署)
+  、[🧊 通过 Heroku 部署](#-通过-Heroku-部署)、[☁ 通过 各种云函数 部署](#-通过各种云函数部署) 等相关内容。
 
 ### 🌿 特别感谢 Special Thanks
 
@@ -81,8 +83,7 @@ Thanks for non-commercial open source development authorization by JetBrains.
 
 ### 🎁 事前准备
 
-- VPS：随便一台服务器都行，系统推荐`Debian`或者`Centos7`，另外 PHP 版本需在`php7.3`及以上。如果你没有服务器，推荐参考下方文档
-  [🚈 通过 Railway 部署](#-方式二通过-Railway-部署) 或者 [☁ 通过 各种云函数 部署](#-方式三通过各种云函数部署) 。
+- VPS：随便一台服务器都行，系统推荐`Debian`。`PHP`版本需在`php7.3`及以上，如果有`Docker`环境则可无视这个限制。如果你没有服务器，可参考本文档部署到各种免费环境中。
 - 送信邮箱（可选）：为了方便理解又称机器人邮箱，用于发送通知邮件。目前针对`Gmail`、`QQ邮箱`、`163邮箱`以及`Outlook邮箱`，程序会自动判断送信邮箱类型并使用合适的配置。
   如果你使用的是其它第三方邮箱或者自建邮件服务，那么请参考 [.env.example](https://github.com/luolongfei/freenom/blob/main/.env.example)
   文件中与邮件配置相关的注释进行配置。
@@ -121,6 +122,8 @@ Thanks for non-commercial open source development authorization by JetBrains.
     <summary>设置Gmail</summary>
 <br>
 
+*推荐打开浏览器隐私模式后再登录 gmail 进行设置，防止当你有多个 gmail 账户时无法跳到正确的设置地址。*
+
 1、在`设置>转发和POP/IMAP`中，勾选
 
 - 对所有邮件启用 POP
@@ -130,23 +133,16 @@ Thanks for non-commercial open source development authorization by JetBrains.
 
 然后保存更改。
 
-2、允许不够安全的应用
+2、开启两步验证
 
-*推荐打开浏览器隐私模式后再登录 gmail 进行设置，防止当你有多个 gmail 账户时无法跳到正确的设置地址。*
+参考官方文档：[开启两步验证](https://support.google.com/accounts/answer/185839)
 
-登录谷歌邮箱后，访问 [谷歌权限设置界面](https://myaccount.google.com/u/0/lesssecureapps?pli=1&pageId=none) ，启用允许不够安全的应用。
+3、配置使用应用专用密码登录邮箱
 
-![gmail配置02](https://s2.ax1x.com/2020/01/31/1392KH.png "gmail配置02")
+参考官方文档：[使用应用专用密码登录](https://support.google.com/mail/answer/185833?hl=zh-Hans)
 
-另外，若遇到提示
-> 不允许访问账户
+**由于 Gmail 已不再支持“不安全的登录方式”，故目前只能使用账户加应用专用密码的方式登录。**
 
-登录谷歌邮箱后，去 [gmail的这个界面](https://accounts.google.com/b/0/DisplayUnlockCaptcha) 点击允许。这种情况较为少见。
-
-**注意：由于直接使用 gmail
-密码登录容易触发谷歌安全机制，故推荐参考官方文档启用应用专用密码：[https://support.google.com/mail/answer/185833?hl=zh-Hans](https://support.google.com/mail/answer/185833?hl=zh-Hans)**
-
-**使用账户+应用专用密码登录，就算频繁换 ip 登录 gmail 也不会触发谷歌安全机制。**
 ***
 
 </details>
@@ -221,7 +217,9 @@ Thanks for non-commercial open source development authorization by JetBrains.
 
 ***
 
-### 🐳 方式一：通过 Docker 部署（推荐，最简单的部署方式）
+### 🐳 通过 Docker 部署
+
+*如果你有自己的服务器，这是最推荐的部署方式。*
 
 Docker 仓库地址为： [https://hub.docker.com/r/luolongfei/freenom](https://hub.docker.com/r/luolongfei/freenom) ，同样欢迎 star 。
 此镜像支持的架构为`linux/amd64`，`linux/arm64`，`linux/ppc64le`，`linux/s390x`，`linux/386`，`linux/arm/v7`，`linux/arm/v6`， 理论上支持`群晖`
@@ -350,6 +348,12 @@ docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/ap
 删除旧的镜像，然后再执行上面的 `docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs luolongfei/freenom`
 重新部署即可，这样部署后就是最新的代码了。当然，新版对应的`.env`文件可能有变动，不必担心，程序会自动更新`.env`文件内容，并将已有的配置迁移过去。
 
+一句话操作，即在`.env`文件所在目录下执行以下命令，即可完成更新升级：
+
+```shell
+docker rm -f freenom && docker rmi -f luolongfei/freenom && docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs luolongfei/freenom
+```
+
 ##### 2.2 后期容器管理以及 Docker 常用命令
 
 查看容器在线状态及大小
@@ -404,7 +408,7 @@ systemctl restart docker
 
 ***
 
-### 🚈 方式二：通过 Railway 部署
+### 🚈 通过 Railway 部署
 
 *推荐没有自己服务器的用户使用此方案。*
 
@@ -413,7 +417,23 @@ systemctl restart docker
 
 ***
 
-### ☁ 方式三：通过各种云函数部署
+### 🧊 通过 Heroku 部署
+
+*由于休眠问题以及 Cron 问题还没有比较完美的解决方案，故暂时不推荐通过这种方式部署。*
+
+点击下方按钮，可以一键部署到 Heroku，不过由于 Heroku 免费版本每 30 分钟休眠，你可以将创建的 app 地址交给 [https://kaffeine.herokuapp.com](https://kaffeine.herokuapp.com/) ，让它每隔一段时间就 ping 一下你的地址，使得你的容器保持唤醒状态。而 Heroku 容器每个月最多只能清醒 500 个小时，所以还是会面临休眠问题。除非你验证信用卡以获取 1000 小时运行时长。
+
+**注意，Heroku 还有个不太好处理的问题，在容器内部似乎不能正常使用 Cron 计划任务，可能跟每次由不同用户启动容器，且每次容器都位于不同的机器有关。只能使用 Heroku 提供的调度器，很不灵活，或者借助代码实现与 Cron 类似的功能。参考：**
+
+> [https://stackoverflow.com/a/2611936](https://stackoverflow.com/a/2611936)
+> 
+> [https://medartus.medium.com/how-to-use-cron-on-heroku-for-free-778d8602a622](https://medartus.medium.com/how-to-use-cron-on-heroku-for-free-778d8602a622)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+***
+
+### ☁ 通过各种云函数部署
 
 所有云函数使用的是同一个压缩包，已做兼容处理，下载地址：
 [https://github.com/luolongfei/freenom/releases/download/v0.5/freenom_scf.zip](https://github.com/luolongfei/freenom/releases/download/v0.5/freenom_scf.zip)
@@ -432,7 +452,7 @@ systemctl restart docker
 
 ***
 
-### 🚧 方式四：直接拉取源码部署
+### 🚧 直接拉取源码部署
 
 有关 【直接拉取源码部署】
 的具体操作步骤请参考 [此处](https://github.com/luolongfei/freenom/wiki/%E7%9B%B4%E6%8E%A5%E6%8B%89%E5%8F%96%E6%BA%90%E7%A0%81%E9%83%A8%E7%BD%B2)
@@ -448,8 +468,9 @@ systemctl restart docker
 
 ### ❤ 赞助 Donation
 
-如果你觉得本项目真的有帮助到你并且想回馈作者，感谢你的赞助。
-if you like my script, please consider supporting the project going forward. Your support is greatly appreciated 😃
+如果你觉得本项目对你有帮助，请考虑赞助本项目，以激励我投入更多的时间进行维护与开发。
+If you find this project helpful, please consider supporting the project going forward. Your support is greatly
+appreciated.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X7X8CA7S1)
 
